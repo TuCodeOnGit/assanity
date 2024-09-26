@@ -1,9 +1,12 @@
 ---
 import { loadQuery } from "../sanity/lib/load-query"
 import { type Post } from "../models"
+import { urlForImage } from "../sanity/lib/urlForImage"
+
 const { data: posts } = await loadQuery<Post[]>({
 	query: `*[_type == "post"]`,
 })
+export const prerender = true
 ---
 
 <html lang="en">
@@ -18,8 +21,9 @@ const { data: posts } = await loadQuery<Post[]>({
 		<h1>Astro</h1>
 		<hr>
 		{posts.map(p => <div>
-			<h5>{p.title}</h5>
+			<h5><a href={`post/${p.slug.current}`}>{p.title}</a></h5>
 			<p>{p.description}</p>
+			<img src={urlForImage(p.image).width(200).url()} />
 		</div>)}
 	</body>
 </html>
