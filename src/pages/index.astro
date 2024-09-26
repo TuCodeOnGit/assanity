@@ -1,5 +1,9 @@
 ---
-
+import { loadQuery } from "../sanity/lib/load-query"
+import { type Post } from "../models"
+const { data: posts } = await loadQuery<Post[]>({
+	query: `*[_type == "post"]`,
+})
 ---
 
 <html lang="en">
@@ -12,5 +16,10 @@
 	</head>
 	<body>
 		<h1>Astro</h1>
+		<hr>
+		{posts.map(p => <div>
+			<h5>{p.title}</h5>
+			<p>{p.description}</p>
+		</div>)}
 	</body>
 </html>
